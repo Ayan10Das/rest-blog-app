@@ -96,7 +96,7 @@ router.post('/login',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
 
-            res.json({ message: "Login successful" });
+            res.json({ message: "Login successful",token:accessToken });
 
         } catch (err) {
             res.status(400).json({ message: "Server error, Please try again later!" })
@@ -115,7 +115,7 @@ router.post("/refresh-token", (req, res) => {
             async (err, decoded) => {
                 if (err) { return res.status(401).json({ message: "Invalid Rfresh Token" }) }
 
-                const user =await userModel.findById(decoded._id)
+                const user =await userModel.findById(decoded.id)
                 if (!user) { return res.status(400).json({ message: "User not found" }) }
 
                 const newAccessToken = jwt.sign(
