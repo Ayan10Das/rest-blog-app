@@ -17,8 +17,8 @@ app.use(cors({
 app.use(cookie_parser())
 app.use(express.json())
 
-app.use('/auth',authRoute)
-app.use('/user',userRoute)
+app.use('/',authRoute)
+app.use('/',userRoute)
 
 
 app.listen(PORT,()=>{
