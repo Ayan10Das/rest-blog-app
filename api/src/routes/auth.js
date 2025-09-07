@@ -15,11 +15,11 @@ router.post('/register',
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
+            console.log('inside register')
             return res.status(400).json({
                 errors: errors.array()
             })
         }
-
         try {
             const { username, email, password } = req.body
 
