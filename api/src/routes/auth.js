@@ -52,12 +52,13 @@ router.post('/login',
         body('password').isLength({ min: 8 }).withMessage("Password is too short")
     ],
     async (req, res) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array()
-            })
-        }
+        // const errors = validationResult(req)
+        // if (!errors.isEmpty()) {
+        //     return res.status(400).json({
+        //         errors: errors.array(),
+        //         message:"Invalid inputs"
+        //     })
+        // }
 
         try {
 
@@ -96,7 +97,7 @@ router.post('/login',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             })
 
-            res.json({ message: "Login successful",token:accessToken });
+            res.json({ message: "Login successful",token:accessToken, user:user });
 
         } catch (err) {
             res.status(400).json({ message: "Server error, Please try again later!" })
@@ -113,7 +114,7 @@ router.post("/refresh-token", (req, res) => {
             refreshToken,
             process.env.REFRESH_TOKEN_PRIVATE_KEY,
             async (err, decoded) => {
-                if (err) { return res.status(401).json({ message: "Invalid Rfresh Token" }) }
+                if (err) { return res.status(401).json({ message: "Invalid Refresh Token" }) }
 
                 const user =await userModel.findById(decoded.id)
                 if (!user) { return res.status(400).json({ message: "User not found" }) }

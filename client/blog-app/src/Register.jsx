@@ -34,7 +34,7 @@ function Register() {
                 } else if (data.message) {
                     alert(data.message);
                 } else {
-                    alert(`Invalid inputs`)
+                    alert(`Server error pleasse try again later!`)
                 }
                 return;
             }

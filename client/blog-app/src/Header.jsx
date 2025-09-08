@@ -25,13 +25,14 @@ function Header() {
         MyBlog
       </Link>
 
-      <nav className="space-x-4">
+      <nav className="space-x-4 flex gap-1">
         {user ? (
           <>
-            <Link className='text-xl' to="/create">Create Post</Link>
+            <p className="text-black justify-center items-center text-lg">{user.username}</p>
+            <Link className='text-lg' to="/create">Create Post</Link>
             <button
               onClick={handleLogout}
-              className="text-red-500 hover:underline"
+              className="text-red-500 hover:underline text-lg cursor-pointer"
             >
               Logout
             </button>
@@ -39,7 +40,7 @@ function Header() {
         ) : (
           <>
             <Link className='text-xl font-bold hover:underline' to="/login">Login</Link>
-            <Link className='text-xl font-bold' to="/register">Register</Link>
+            <Link className='text-xl font-bold hover:underline' to="/register">Register</Link>
           </>
         )}
       </nav>
