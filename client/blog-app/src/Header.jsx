@@ -29,7 +29,7 @@ function Header() {
         {user ? (
           <>
             <p className="text-black justify-center items-center text-lg">{user.username}</p>
-            <Link className='text-lg' to="/create">Create Post</Link>
+            <Link className='text-lg' to="/create-post">Create Post</Link>
             <button
               onClick={handleLogout}
               className="text-red-500 hover:underline text-lg cursor-pointer"

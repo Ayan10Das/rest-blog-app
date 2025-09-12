@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { Schema } = mongoose()
+const { Schema } = mongoose
 
 const postSchema = new Schema({
     title: {
@@ -11,7 +11,7 @@ const postSchema = new Schema({
     },
     summary: {
         type: String,
-        minlength: 10,
+        minlength: 15,
         maxlength: 300,
         required: true
     },
