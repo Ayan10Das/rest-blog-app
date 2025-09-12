@@ -7,8 +7,8 @@ import Login from './Login'
 import Register from './Register'
 import Home from './Home'
 import Profile from './Profile'
-import Post from './Post'
 import ProtectedRoute from './context/ProtectedRoute'
+import CratePost from './CratePost'
 
 function App() {
 
@@ -23,7 +23,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-post" element={
               <ProtectedRoute>
-                <Post />
+                <CratePost />
               </ProtectedRoute>
             } />
           </Route>
