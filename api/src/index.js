@@ -14,7 +14,8 @@ const { multerErrorHandler } = require('./middleware/multerMiddleware');
 
 dbConnection();
 
-app.use('/uploads',express.static(path.join(__dirname, 'src/uploads')))
+app.use('/uploads',express.static(path.join(__dirname, 'uploads')))
+console.log(__dirname+"/uploads")
 app.use(cors({
     origin:"http://localhost:5173",
     credentials: true
