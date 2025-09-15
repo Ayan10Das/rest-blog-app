@@ -62,7 +62,7 @@ function Register() {
                     value={username}
                     required
                     onChange={(e) => setUsername(e.target.value)}
-                    className={`w-full p-3 mb-1 border rounded-lg focus:outline-none focus:ring-2 
+                    className={`w-full p-3 mb-2 border rounded-lg focus:outline-none focus:ring-2 
                     ${errors.username ?
                             "border-red-500 focus:ring-red-500"
                             : "border-gray-300 focus:ring-blue-500"
@@ -80,7 +80,7 @@ function Register() {
                     value={email}
                     required
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`w-full p-3 mb-1 border rounded-lg focus:outline-none focus:ring-2
+                    className={`w-full p-3 mb-2 border rounded-lg focus:outline-none focus:ring-2
                     ${errors.email ?
                             "border-red-500 focus:ring-red-500"
                             : "border-gray-300 focus:ring-blue-500"
@@ -95,7 +95,7 @@ function Register() {
                     value={password}
                     required
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`w-full p-3 mb-1 border rounded-lg focus:outline-none focus:ring-2 
+                    className={`w-full p-3 mb-2 border rounded-lg focus:outline-none focus:ring-2 
                          ${errors.password ?
                             "border-red-500 focus:ring-red-500"
                             : "border-gray-300 focus:ring-blue-500"
@@ -105,7 +105,7 @@ function Register() {
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+                    className="w-full mb-1 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition"
                 >Register</button>
 
 

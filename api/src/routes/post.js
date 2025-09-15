@@ -59,4 +59,19 @@ router.get('/post',async (req,res)=>{
     }
 })
 
+router.get('/single-post/:postId',async (req,res)=>{
+    const {postId}=req.params
+
+    try{
+        const post=await postModel.findById(postId).populate('author','username email')
+        
+        if(!post) {return res.status(404).json({message: "Post not found"})}
+        
+        res.status(200).json(post)
+    }catch(err){
+        console.error(err);
+        res.status(500).json({message:"Server error please try later!"})
+    }
+})
+
 module.exports = router

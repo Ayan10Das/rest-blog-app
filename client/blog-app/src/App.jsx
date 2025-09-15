@@ -9,6 +9,8 @@ import Home from './Home'
 import Profile from './Profile'
 import ProtectedRoute from './context/ProtectedRoute'
 import CratePost from './CratePost'
+import SinglePage from "./singlePage/SinglePage"
+
 
 function App() {
 
@@ -28,6 +30,12 @@ function App() {
             <Route path="/create-post" element={
               <ProtectedRoute>
                 <CratePost />
+              </ProtectedRoute>
+            } />
+
+            <Route path="/single-post/:postId" element={
+              <ProtectedRoute>
+                <SinglePage />
               </ProtectedRoute>
             } />
           </Route>
