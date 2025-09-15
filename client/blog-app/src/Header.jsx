@@ -13,6 +13,7 @@ function Header() {
                 credentials:"include"
             })
             setUser(null)
+            alert("Logged out successfully!")
         }catch(err){
             console.log(err)
             alert("Logout failed!")
@@ -20,7 +21,7 @@ function Header() {
     }
 
   return (
-        <header className="p-8 shadow-md bg-gray-300 flex justify-around items-center">
+        <header className="p-8 shadow-md bg-gray-200 flex justify-around items-center">
       <Link to="/" className="text-2xl font-bold">
         MyBlog
       </Link>
@@ -28,11 +29,11 @@ function Header() {
       <nav className="space-x-4 flex gap-1">
         {user ? (
           <>
-            <p className="text-black justify-center items-center text-lg">{user.username}</p>
-            <Link className='text-lg' to="/create-post">Create Post</Link>
+            <Link className='text-red-500 hover:underline cursor-pointer text-lg hover:-translate-y-0.5' to="/profile">Profile</Link>
+            <Link className='text-red-500 hover:underline cursor-pointer text-lg hover:-translate-y-0.5' to="/create-post">Create Post</Link>
             <button
               onClick={handleLogout}
-              className="text-red-500 hover:underline text-lg cursor-pointer"
+              className="text-red-500 hover:underline text-lg cursor-pointer hover:-translate-y-0.5"
             >
               Logout
             </button>

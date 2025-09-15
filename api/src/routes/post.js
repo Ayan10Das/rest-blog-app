@@ -19,8 +19,7 @@ router.post('/post', verifyAccessToken,
 
         if (!validationErrors.isEmpty()) {
             return res.status(400).json({
-                errors: validationErrors.array(),
-                message: "Invalid content feild"
+                errors: validationErrors.array()
             })
         }
 
