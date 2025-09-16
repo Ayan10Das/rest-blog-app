@@ -15,7 +15,7 @@ router.post('/register',
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            console.log('inside register')
+            // console.log('inside register')
             return res.status(400).json({
                 errors: errors.array()
             })
@@ -52,13 +52,6 @@ router.post('/login',
         body('password').isLength({ min: 8 }).withMessage("Password is too short")
     ],
     async (req, res) => {
-        // const errors = validationResult(req)
-        // if (!errors.isEmpty()) {
-        //     return res.status(400).json({
-        //         errors: errors.array(),
-        //         message:"Invalid inputs"
-        //     })
-        // }
 
         try {
 

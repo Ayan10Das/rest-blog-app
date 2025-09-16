@@ -49,7 +49,7 @@ router.post('/post', verifyAccessToken,
 router.get('/post',async (req,res)=>{
     try{
         const posts=await postModel.find()
-        .populate('author','username email -_id')
+        .populate('author','username email')
         .sort({ createdAt: -1 })
         
         res.json({ posts })

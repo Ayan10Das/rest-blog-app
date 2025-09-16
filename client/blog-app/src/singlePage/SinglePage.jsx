@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { AuthContext } from "../context/AuthContext"
 
 function singlePage() {
-
+  const { user } = useContext(AuthContext)
   const { postId } = useParams()
   const [post, setPost] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isAuthor,setIsAuthor]=useState(false)
+
 
 
   useEffect(() => {
     async function fetchPost() {
       setError(null)
       try {
-        const response =await fetch(`http://localhost:3000/single-post/${postId}`, {
+        const response = await fetch(`http://localhost:3000/single-post/${postId}`, {
           method: "GET"
         })
         const data = await response.json()
@@ -23,16 +26,29 @@ function singlePage() {
         }
 
         setPost(data)
+        // console.log(post)
       } catch (err) {
         setError(err.message)
       } finally {
         setLoading(false)
       }
     }
-    console.log(post)
     fetchPost()
-
+    
   }, [postId])
+  
+  useEffect(() => {
+    if (post) {
+      const isAuthorCheck=user && user._id === post.author?._id
+      setIsAuthor(isAuthorCheck)
+      console.log("Updated post:", post);
+    }
+  }, [post]);
+
+  function handleEdit(){}
+  function handleDelete(){}
+
+
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
@@ -41,12 +57,31 @@ function singlePage() {
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-6 mb-5 max-h-screen">
       <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
 
-    <div className="flex items-center text-sm text-gray-500 mb-4">
-        <span className="mr-3 text-lg">✍️ Author:-  {post.author?.username}</span>
-        <span className='text-lg'>📅 {new Date(post.createdAt).toLocaleDateString()}</span>
-      </div>
+      <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+        <div>
 
-      <p className="text-gray-600 mb-4">{post.summary}</p>
+        <span className="mr-3 text-xl">✍️ Author:-  {post.author?.username}</span>
+        <span className='text-lg'>📅 {new Date(post.createdAt).toLocaleDateString()}</span>
+        </div>
+      {/* Edit and Delete option */}
+      {isAuthor && (
+        <div className="flex gap-4 mb-6 justify-end mt-0">
+          <button
+            onClick={handleEdit}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            ✏️ Edit
+          </button>
+          <button
+            onClick={handleDelete}
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          >
+            🗑️ Delete
+          </button>
+        </div>
+      )}
+</div>
+      <p className="text-gray-600 mb-3 text-xl">About: {post.summary}</p>
       {post.coverImage && (
         <img
           src={`http://localhost:3000${post.coverImage}`}

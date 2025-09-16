@@ -114,7 +114,7 @@ function CratePost() {
               <img
                 src={preview}
                 alt="Preview"
-                className="mt-3 w-full h-56 object-cover rounded-xl border"
+                className="mt-3 min-w-100 max-h-80 object-cover rounded-2xl "
               />)}
               
 
