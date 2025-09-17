@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from "../context/AuthContext"
 
 function singlePage() {
@@ -8,7 +8,8 @@ function singlePage() {
   const [post, setPost] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [isAuthor,setIsAuthor]=useState(false)
+  const [isAuthor, setIsAuthor] = useState(false)
+  const navigate=useNavigate()
 
 
 
@@ -34,19 +35,42 @@ function singlePage() {
       }
     }
     fetchPost()
-    
+
   }, [postId])
-  
+
   useEffect(() => {
     if (post) {
-      const isAuthorCheck=user && user._id === post.author?._id
+      const isAuthorCheck = user && user._id === post.author?._id
       setIsAuthor(isAuthorCheck)
       console.log("Updated post:", post);
     }
   }, [post]);
 
-  function handleEdit(){}
-  function handleDelete(){}
+  function handleEdit() {
+
+  }
+
+  async function handleDelete() {
+    try {
+      const response = await fetch(`http://localhost:3000/single-post/${postId}`, {
+        method: "DELETE",
+        credentials: "include"
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        alert(data.message);
+        return;
+      }
+
+      alert(data.message)
+      navigate('/')
+    }catch(err){
+      alert("Server error please try again later!")
+      console.error(err)
+    }  
+  }
 
 
 
@@ -60,27 +84,27 @@ function singlePage() {
       <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
         <div>
 
-        <span className="mr-3 text-xl">✍️ Author:-  {post.author?.username}</span>
-        <span className='text-lg'>📅 {new Date(post.createdAt).toLocaleDateString()}</span>
+          <span className="mr-3 text-xl">✍️ Author:-  {post.author?.username}</span>
+          <span className='text-lg'>📅 {new Date(post.createdAt).toLocaleDateString()}</span>
         </div>
-      {/* Edit and Delete option */}
-      {isAuthor && (
-        <div className="flex gap-4 mb-6 justify-end mt-0">
-          <button
-            onClick={handleEdit}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            ✏️ Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-          >
-            🗑️ Delete
-          </button>
-        </div>
-      )}
-</div>
+        {/* Edit and Delete option */}
+        {isAuthor && (
+          <div className="flex gap-4 mb-6 justify-end mt-0">
+            <button
+              onClick={handleEdit}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              ✏️ Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+            >
+              🗑️ Delete
+            </button>
+          </div>
+        )}
+      </div>
       <p className="text-gray-600 mb-3 text-xl">About: {post.summary}</p>
       {post.coverImage && (
         <img
