@@ -3,8 +3,78 @@ const postModel = require('../models/Post')
 const { body, validationResult } = require('express-validator');
 const { verifyAccessToken } = require('../middleware/authMiddleware');
 const { upload } = require('../middleware/multerMiddleware')
+const commentModel = require('../models/Comments')
 
 const router = express.Router();
+
+router.get('/single-post/:postId/comments', async (req, res) => {
+    const { postId } = req.params
+
+    const limit = Math.max(1, parseInt(req.query.limit || '5'))
+    const page = Math.max(1, parseInt(req.query.page || '1'))
+    const skip = (page - 1) * limit
+
+    try {
+        const postExists = await postModel.findById(postId).select('_id');
+        if (!postExists) return res.status(404).json({ message: 'Post not found' });
+
+        const comments = await commentModel.find({ post: postId })
+            .populate('author', "username email")
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean()
+
+        const total = await commentModel.countDocuments({ post: postId });
+
+        res.status(200).json({
+            comments,
+            limit,
+            skip,
+            hasMore: skip + comments.length < total
+        })
+    } catch(err){
+        console.error(err)
+        res.status(500).json({ message: "Server Error" })
+    }
+})
+
+router.post('/single-post/:postId/comments',
+    verifyAccessToken,
+    body('content').isLength({ min: 1 }).withMessage("Content can not be empty"),
+    async (req, res) => {
+        const { postId } = req.params
+        const validationErrors = validationResult(req);
+
+        if (!validationErrors.isEmpty()) {
+            return res.status(400).json({
+                errors: validationErrors.array()
+            })
+        }
+
+        try {
+            const post = await postModel.findById(postId);
+            if (!post) {
+                return res.status(404).json({ message: "post not found!" })
+            }
+
+            const comment = await commentModel.create({
+                content: req.body.content,
+                post: postId,
+                author: req.user.id
+            })
+
+            await comment.populate('author', 'username email')
+            res.status(200).json({
+                comment: comment
+            })
+
+        } catch (err) {
+            console.error(err)
+            res.status(500).json({ message: "Server error please try again later!" })
+        }
+
+    })
 
 
 router.post('/post', verifyAccessToken,
