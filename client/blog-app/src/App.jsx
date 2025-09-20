@@ -9,7 +9,8 @@ import Home from './Home'
 import Profile from './Profile'
 import ProtectedRoute from './context/ProtectedRoute'
 import CratePost from './CratePost'
-import SinglePage from "./singlePage/SinglePage"
+import EditPost from './EditPost'
+import SinglePage from './singlePage/SinglePage'
 
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
               </ProtectedRoute>
             } />
           </Route>
+
+          <Route path='single-post/edit/:postId' element={<EditPost />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

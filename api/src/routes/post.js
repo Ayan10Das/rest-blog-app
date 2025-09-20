@@ -85,9 +85,9 @@ router.delete("/single-post/:postId", verifyAccessToken, async (req, res) => {
 
         if (post.author?._id.toString() !== req.user.id) {
             // alert(req.user.id,post.author?._id)
-            
+
             res.status(403).json({ message: "Unauthorized" })
-            return 
+            return
         }
 
         await post.deleteOne();
@@ -98,5 +98,54 @@ router.delete("/single-post/:postId", verifyAccessToken, async (req, res) => {
         res.status(500).json({ message: "Server error please try later!" });
     }
 })
+
+router.put('/single-post/:postId', verifyAccessToken, upload.single('file'),
+    [
+        body('title').isLength({ min: 4, max: 100 }).withMessage("Title must be between 4-100 characters"),
+        body('summary').isLength({ min: 15, max: 300 }).withMessage("Summary must be between 15 to 300 characters"),
+        body('content').isLength({ min: 20 }).withMessage("Content is too short"),
+    ],
+    async (req, res) => {
+        const { postId } = req.params
+
+        const validationErrors = validationResult(req)
+        if (!validationErrors.isEmpty()) {
+            return res.status(401).json({
+                errors: validationErrors.array()
+            })
+        }
+
+        try {
+            const post = await postModel.findById(postId)
+            if (!post) {
+                return res.status(404).json({ message: "Post not found!" })
+            }
+
+            if (post.author?._id.toString() !== req.user.id) {
+                res.status(403).json({ message: "Unauthorized" })
+                return
+            }
+
+            const { title, summary, content } = req.body;
+
+            post.title = title;
+            post.summary = summary
+            post.content = content
+
+            if (req.file) {
+                post.coverImage = `/uploads/${req.file?.filename}`
+            }
+
+            await post.save()
+
+            res.status(200).json({
+                message: "Post updated successfully",
+                post,
+            });
+
+        }
+        catch (err) { }
+    }
+)
 
 module.exports = router

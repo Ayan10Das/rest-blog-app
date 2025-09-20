@@ -47,7 +47,7 @@ function singlePage() {
   }, [post]);
 
   function handleEdit() {
-
+    navigate(`/single-post/edit/${postId}`)
   }
 
   async function handleDelete() {
@@ -78,7 +78,7 @@ function singlePage() {
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-6 mb-5 max-h-screen">
+    <div className="max-w-3xl mx-auto p-6 bg-gray-200 rounded-xl shadow-xl mt-6 mb-5 max-h-screen">
       <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
 
       <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
