@@ -26,7 +26,7 @@
   }
 }
 
-# POST /posts(auth required)
+# POST /post(auth required)
 {
     "title": "My First Blog",
   "content": "This is the content...",
@@ -43,7 +43,7 @@
   "createdAt": "2025-09-01T12:00:00Z"
 }
 
-# GET /posts
+# GET /post
 - Returns a list of posts (paginated).
 - response
 [
@@ -82,3 +82,9 @@
 
 # GET /single-post/:id/comments
 - Returns list of comments for a post.
+
+# PUT /comments/:commentId
+- Update the existing comment
+
+# DELETE /comments/:commentId
+- Delete the existing comment
