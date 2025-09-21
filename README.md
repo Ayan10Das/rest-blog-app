@@ -13,4 +13,4 @@ A RESTful Blog Application built with React (Vite + Tailwind) and Node.js (Expre
 - `/docs` → Documentation (API contract, DB schema, etc.)
 
 ## Status
-🚧 Work in Progress 🚧
+Completed✅
