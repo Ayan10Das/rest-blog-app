@@ -66,7 +66,7 @@
 # Delete /single-post/:postId(auth required)
 - Delete post
 
-# POST /sigle-post/:id/comments
+# POST /sigle-post/:postId/comments
 {
   "content": "Nice article!"
 }
@@ -80,7 +80,7 @@
   "createdAt": "2025-09-01T12:30:00Z"
 }
 
-# GET /single-post/:id/comments
+# GET /single-post/:postId/comments
 - Returns list of comments for a post.
 
 # PUT /comments/:commentId
