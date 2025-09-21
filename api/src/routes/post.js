@@ -31,7 +31,8 @@ router.get('/single-post/:postId/comments', async (req, res) => {
             comments,
             limit,
             skip,
-            hasMore: skip + comments.length < total
+            hasMore: skip + comments.length < total,
+            total,
         })
     } catch(err){
         console.error(err)
@@ -75,6 +76,65 @@ router.post('/single-post/:postId/comments',
         }
 
     })
+
+
+    // UPDATE comment
+router.put('/comments/:commentId',
+  verifyAccessToken,
+  body('content').isLength({ min: 1 }).withMessage("Content cannot be empty"),
+  async (req, res) => {
+    const { commentId } = req.params;
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).json({ errors: validationErrors.array() });
+    }
+
+    try {
+      const comment = await commentModel.findById(commentId);
+      if (!comment) return res.status(404).json({ message: "Comment not found!" });
+
+      // only author can update
+      if (comment.author.toString() !== req.user.id) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      comment.content = req.body.content;
+      await comment.save();
+
+      await comment.populate('author', 'username email');
+      res.status(200).json({ message: "Comment updated successfully", comment });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error please try again later!" });
+    }
+  }
+);
+
+// DELETE comment
+router.delete('/comments/:commentId',
+  verifyAccessToken,
+  async (req, res) => {
+    const { commentId } = req.params;
+
+    try {
+      const comment = await commentModel.findById(commentId);
+      if (!comment) return res.status(404).json({ message: "Comment not found!" });
+
+      // only author can delete
+      if (comment.author.toString() !== req.user.id) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      await comment.deleteOne();
+      res.status(200).json({ message: "Comment deleted successfully" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error please try again later!" });
+    }
+  }
+);
+
 
 
 router.post('/post', verifyAccessToken,

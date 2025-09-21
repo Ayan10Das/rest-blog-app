@@ -1,4 +1,4 @@
-# POST /auth/register
+# POST /register
 {
   "username": "ayan",
   "email": "ayan@example.com",
@@ -10,7 +10,7 @@
 }
 
 
-# POST /auth/login
+# POST /login
 {
   "email": "ayan@example.com",
   "password": "secret123"
@@ -57,10 +57,16 @@
 ]
 
 
-# GET /posts/:id
+# GET /single-post/:postId
 - Returns one post + comments.
 
-# POST /posts/:id/comments
+# PUT /single-post/:postId(auth required)
+- Update the existing post
+
+# Delete /single-post/:postId(auth required)
+- Delete post
+
+# POST /sigle-post/:id/comments
 {
   "content": "Nice article!"
 }
@@ -74,5 +80,5 @@
   "createdAt": "2025-09-01T12:30:00Z"
 }
 
-# GET /posts/:id/comments
+# GET /single-post/:id/comments
 - Returns list of comments for a post.

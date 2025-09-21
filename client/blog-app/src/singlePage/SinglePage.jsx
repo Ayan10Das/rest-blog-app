@@ -139,6 +139,11 @@ function SinglePage() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    console.log("Logged in user:", user);
+  }, [user]);
+
+
+  useEffect(() => {
     async function fetchPost() {
       setError(null)
       try {
@@ -174,6 +179,7 @@ function SinglePage() {
   }
 
   async function handleDelete() {
+    if (!window.confirm('Delete this post?')) return;
     try {
       const response = await fetch(`http://localhost:3000/single-post/${postId}`, {
         method: "DELETE",

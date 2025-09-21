@@ -29,7 +29,6 @@ function Header() {
       <nav className="space-x-4 flex gap-1">
         {user ? (
           <>
-            <Link className='text-red-500 hover:underline cursor-pointer text-lg hover:-translate-y-0.5' to="/profile">Profile</Link>
             <Link className='text-red-500 hover:underline cursor-pointer text-lg hover:-translate-y-0.5' to="/create-post">Create Post</Link>
             <button
               onClick={handleLogout}
